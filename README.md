@@ -142,6 +142,10 @@ The algorithms are standard and old, and pretending otherwise would be silly. Pa
 
 Part of a set: [unflake](https://github.com/BOTIROFF-D/unflake) samples schedules, [bulwark](https://github.com/BOTIROFF-D/bulwark) tests consensus with them, [adya](https://github.com/BOTIROFF-D/adya) tests transaction isolation — and this proves small instances outright instead of sampling.
 
+## Who wrote this
+
+[Doniyor Botirov](https://dbit.one/en/founder), founder of [dbit.one](https://dbit.one/en). The reasoning behind this repository at length — why a green suite says "not found" rather than "not there", and what closes that gap: [Tests do not prove the absence of a bug](https://dbit.one/en/blog/model-checking-proving-absence-of-bugs).
+
 ## License
 
 MIT
