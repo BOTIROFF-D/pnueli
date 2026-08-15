@@ -1,0 +1,54 @@
+{
+  "name": "@botiroff/pnueli",
+  "version": "0.1.0",
+  "description": "An explicit-state model checker: exhaustive search with symmetry reduction, partial-order reduction and liveness under weak fairness, validated against unreduced ground truth.",
+  "keywords": [
+    "model-checking",
+    "formal-methods",
+    "partial-order-reduction",
+    "symmetry-reduction",
+    "liveness",
+    "temporal-logic",
+    "verification",
+    "state-space",
+    "concurrency"
+  ],
+  "license": "MIT",
+  "author": "BOTIROFF-D",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BOTIROFF-D/pnueli.git"
+  },
+  "homepage": "https://github.com/BOTIROFF-D/pnueli#readme",
+  "bugs": "https://github.com/BOTIROFF-D/pnueli/issues",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": { "access": "public" },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "README.md", "LICENSE"],
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "bench": "vitest run test/reduction",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run typecheck && npm run test && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
