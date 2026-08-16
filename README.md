@@ -70,6 +70,41 @@ The counterexamples are the output that matters, and breadth-first search makes 
 
 Both look, both see a lowered flag, both walk in. That is the whole reason the flag has to go up first.
 
+## Proving what the other repositories sample
+
+[bulwark](https://github.com/BOTIROFF-D/bulwark) tests Raft's Election Safety by running the implementation under seeded partitions, crashes and reordered messages. [adya](https://github.com/BOTIROFF-D/adya) finds write skew by generating concurrent transactions and looking for dependency cycles in the histories. Both work, and both say plainly that a clean result means *not found*, not *impossible*.
+
+Here are the same two properties on instances small enough for *impossible* to be available.
+
+| Property | Sampled | Proven here |
+| --- | --- | --- |
+| Election Safety, 3 nodes, terms ≤ 3 | hundreds of schedules | **2,428 states**, exhaustive |
+| Election Safety, 5 nodes, terms ≤ 2 | hundreds of schedules | **148,318 states**, exhaustive |
+| Election Safety, 5 nodes, terms ≤ 3 | hundreds of schedules | **6,801,084 states**, exhaustive |
+| Write skew under snapshot isolation | found at seed 25 of 300 | reachable in **5 steps**, shortest |
+
+And the failure modes line up with the ones bulwark had to construct by hand. Its unpersisted-vote exhibit crashes a node in the one-tick window between granting a vote and writing it down — a window a random search never lands in, so bulwark builds that scenario directly. Take the same rule out of the specification and it is simply a reachable state:
+
+```
+✗ raft election (3 nodes, terms ≤ 2, one-vote-per-term OFF)
+  invariant "at most one leader per term" does not hold
+
+  trace
+    (initial)                 n0:f0 n1:f0 n2:f0
+    n0: stand for election    n0:c1→0 n1:f0   n2:f0
+    n1: stand for election    n0:c1→0 n1:c1→1 n2:f0
+    n0: vote for n1           n0:c1→1 n1:c1→1 n2:f0
+    n1: take office           n0:c1→1 n1:l1→1 n2:f0
+    n1: vote for n0           n0:c1→1 n1:l1→0 n2:f0
+    n0: take office           n0:l1→1 n1:l1→0 n2:f0
+```
+
+Two candidates in term 1, each collecting the other's vote. One vote per term is the only thing standing between that and a split brain — and this is what "only thing" means, stated over every reachable configuration rather than over the ones a seed happened to produce.
+
+The specifications are [`specs/raft-election.ts`](./specs/raft-election.ts) and [`specs/write-skew.ts`](./specs/write-skew.ts); the checks are [`test/portfolio.test.ts`](./test/portfolio.test.ts).
+
+**What this does not prove.** The specification is not the implementation. bulwark's Raft has message loss, duplication, reordering, crash-restart and persistence; this model has none of them, and voting is atomic. A proof about the model is a proof that the *algorithm* is sound at that level of abstraction — it says nothing about whether the code implements the algorithm. That is what the sampling is for, and why both exist.
+
 ## Liveness
 
 Safety asks whether a bad state is reachable, and breadth-first search answers it. Liveness asks whether something good always eventually happens, and it is violated by an infinite run that never gets there — in a finite state space, a lasso: a path into a cycle, then the cycle forever.

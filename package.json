@@ -1,6 +1,6 @@
 {
   "name": "@botiroff/pnueli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "An explicit-state model checker: exhaustive search with symmetry reduction, partial-order reduction and liveness under weak fairness, validated against unreduced ground truth.",
   "keywords": [
     "model-checking",
@@ -23,7 +23,9 @@
   "bugs": "https://github.com/BOTIROFF-D/pnueli/issues",
   "type": "module",
   "sideEffects": false,
-  "publishConfig": { "access": "public" },
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -34,8 +36,14 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist", "README.md", "LICENSE"],
-  "engines": { "node": ">=18" },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc --noEmit",
