@@ -37,6 +37,15 @@ peterson             20        20      20      1×
 
 That row is in the test suite as an assertion. A tool that claimed a reduction there would be claiming something false.
 
+The full measurement is in [`exp/`](./exp) (`npm run exp`), and the shape it
+found is sharper than the two rows above: on `workers(n)` every mode has an
+exact closed form — 5ⁿ unreduced, C(n+4, 4) with symmetry alone, 2ⁿ + 3n with
+partial order alone, and **4n + 1 with both**. Each reduction removes a
+different exponential, so either one on its own leaves the other's standing.
+The same directory asks whether the four ample-set conditions are load-bearing;
+C2 and C3 have reproducible minimal witnesses, C1 does not, and `exp/README.md`
+is careful about what that second fact does and does not mean.
+
 ## Why there are two searches
 
 A partial-order reduction that drops the wrong states produces exactly the same output as one that works. Both say *no violation found*. One of them is a lie, and nothing inside the reduced search can tell you which you are holding.

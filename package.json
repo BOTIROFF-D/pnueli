@@ -50,6 +50,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "bench": "vitest run test/reduction",
+    "exp": "vitest run --config vitest.exp.config.ts",
     "prepare": "npm run build",
     "prepublishOnly": "npm run typecheck && npm run test && npm run build"
   },
